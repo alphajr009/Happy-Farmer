@@ -17,14 +17,19 @@ if (isset($_SESSION['user_id'])) {
         $user = $result->fetch_assoc();
         $stmt->close();
 
-        if (!$user || !password_verify($currentPassword, $user['password'])) {
+        // Debugging statements
+        echo "Current Password (entered): $currentPassword<br>";
+        echo "Password (from database): " . $user['password'] . "<br>";
+
+        if (!$user) {
+            $_SESSION['error'] = "User not found.";
+        } elseif ($currentPassword != $user['password']) {
             $_SESSION['error'] = "Current password is incorrect.";
         } elseif ($newPassword != $confirmNewPassword) {
             $_SESSION['error'] = "New password and confirm new password do not match.";
         } else {
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ?");
-            $stmt->bind_param("si", $hashedPassword, $user_id);
+            $stmt->bind_param("si", $newPassword, $user_id);
             $stmt->execute();
             $stmt->close();
 
