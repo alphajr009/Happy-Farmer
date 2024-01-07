@@ -1,77 +1,21 @@
-<?php 
-@include 'config.php';
-include 'nav.php';
- ?>
-
-
-<div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home</a></span> <span>Contact
-                        us</span></p>
-                <h1 class="mb-0 bread">Contact us</h1>
+<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+    <div class="container py-4">
+        <div class="row d-flex justify-content-center py-5">
+            <div class="col-md-6">
+                <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
+                <span>Get e-mail updates about our latest shops and special offers</span>
             </div>
-        </div>
-    </div>
-</div>
-
-<section class="ftco-section contact-section bg-light">
-    <div class="container">
-        <div class="row d-flex mb-5 contact-info">
-            <div class="w-100"></div>
-            <div class="col-md-3 d-flex">
-                <div class="info bg-white p-4">
-                    <p><span>Address:</span> Maligathena Farming
-                        Organization,<br>Udawela,<br>Mandaramnuwara,<br>NuwaraEliya.</p>
-                </div>
-            </div>
-            <div class="col-md-3 d-flex">
-                <div class="info bg-white p-4">
-                    <p><span>Phone:</span> <a href="tel://1234567920">0523536868</a></p>
-                </div>
-            </div>
-            <div class="col-md-3 d-flex">
-                <div class="info bg-white p-4">
-                    <p><span>Email:</span> <a href="mailto:info@yoursite.com">happyfarmer@.com</a></p>
-                </div>
-            </div>
-            <div class="col-md-3 d-flex">
-                <div class="info bg-white p-4">
-                    <p><span>Website</span> <a href="#">happyfarmer.com</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="row block-9">
-            <div class="col-md-6 order-md-last d-flex">
-                <form action="#" class="bg-white p-5 contact-form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Subject">
-                    </div>
-                    <div class="form-group">
-                        <textarea name="" id="" cols="30" rows="7" class="form-control"
-                            placeholder="Message"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+            <div class="col-md-6 d-flex align-items-center">
+                <form action="#" class="subscribe-form">
+                    <div class="form-group d-flex">
+                        <input type="text" class="form-control" placeholder="Enter email address">
+                        <input type="submit" value="Subscribe" class="submit px-3">
                     </div>
                 </form>
-
-            </div>
-
-            <div class="col-md-6 d-flex">
-                <div id="map" class="bg-white"></div>
             </div>
         </div>
     </div>
 </section>
-
 <footer class="ftco-footer ftco-section">
     <div class="container">
         <div class="row">
@@ -128,8 +72,9 @@ include 'nav.php';
                     <h2 class="ftco-heading-2">Have a Questions?</h2>
                     <div class="block-23 mb-3">
                         <ul>
-                            <li><span class="icon icon-map-marker"></span><span class="text">Maligathena Farming
-                                    Organization,<br>Udawela,<br>Mandaramnuwara,<br>NuwaraEliya.</span></li>
+                            <li><span class="icon icon-map-marker"></span><span class="text"> Maligathena Farming
+                                    Organization,<br>Udawela,</span>
+                            </li>
                             <li><a href="#"><span class="icon icon-phone"></span><span
                                         class="text">0523536868</span></a></li>
                             <li><a href="#"><span class="icon icon-envelope"></span><span
@@ -178,10 +123,47 @@ include 'nav.php';
 <script src="js/jquery.animateNumber.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=init" async defer></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false">
+</script>
 <script src="js/google-map.js"></script>
 <script src="js/main.js"></script>
+
+<script>
+$(document).ready(function() {
+
+    var quantitiy = 0;
+    $('.quantity-right-plus').click(function(e) {
+
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var quantity = parseInt($('#quantity').val());
+
+        // If is not undefined
+
+        $('#quantity').val(quantity + 1);
+
+
+        // Increment
+
+    });
+
+    $('.quantity-left-minus').click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var quantity = parseInt($('#quantity').val());
+
+        // If is not undefined
+
+        // Increment
+        if (quantity > 0) {
+            $('#quantity').val(quantity - 1);
+        }
+    });
+
+});
+</script>
 
 </body>
 

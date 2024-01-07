@@ -2,36 +2,39 @@
 
 @include 'config.php';
 
-if(isset($_POST['add_product'])){
+if (isset($_POST['add_product'])) {
 
-   $product_name = $_POST['product_name'];
-   $product_price = $_POST['product_price'];
-   $product_image = $_FILES['product_image']['name'];
-   $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
-   $product_image_folder = 'img/'.$product_image;
+    $product_name = $_POST['product_name'];
+    $product_price = $_POST['product_price'];
+    $product_type = $_POST['product_type']; 
+    $product_description = $_POST['product_description'];
+    $product_amount = $_POST['product_amount'];
+    $product_image = $_FILES['product_image']['name'];
+    $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
+    $product_image_folder = 'img/' . $product_image;
 
-   if(empty($product_name) || empty($product_price) || empty($product_image)){
-      $message[] = 'please fill out all';
-   }else{
-      $insert = "INSERT INTO products(name, price, image) VALUES('$product_name', '$price', '$image_url')";
-      $upload = mysqli_query($conn,$insert);
-      if($upload){
-         move_uploaded_file($product_image_tmp_name, $product_image_folder);
-         $message[] = 'new product added successfully';
-      }else{
-         $message[] = 'could not add the product';
-      }
-   }
+    if (empty($product_name) || empty($product_price) || empty($product_image) || empty($product_type)) {
+        $message[] = 'Please fill out all fields';
+    } else {
+        $insert = "INSERT INTO products(name, price, type, image,product_description,amount) VALUES('$product_name', '$product_price', '$product_type', '$product_image', '$product_description','$product_amount')";
+        $upload = mysqli_query($conn, $insert);
+        if ($upload) {
+            move_uploaded_file($product_image_tmp_name, $product_image_folder);
+            $message[] = 'New product added successfully';
+        } else {
+            $message[] = 'Could not add the product';
+        }
+    }
+}
 
-};
-
-if(isset($_GET['delete'])){
-   $id = $_GET['delete'];
-   mysqli_query($conn, "DELETE FROM products WHERE id = $id");
-   header('location:product_add.php');
-};
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    mysqli_query($conn, "DELETE FROM products WHERE id = $id");
+    header('location: product_add.php');
+}
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -173,6 +176,10 @@ if(isset($_GET['delete'])){
         text-transform: none;
     }
 
+    .container label {
+        font-size: 1.5rem;
+    }
+
     .product-display {
         margin: 2rem 0;
     }
@@ -258,15 +265,55 @@ if(isset($message)){
 
         <div class="admin-product-form-container">
 
-            <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
-                <h3>add a new product</h3>
-                <input type="text" placeholder="enter product name" name="product_name" class="box">
-                <input type="number" placeholder="enter product price" name="product_price" class="box">
-                <input type="file" accept="image/png, image/jpeg, image/jpg" name="product_image" class="box">
-                <input type="submit" class="btn" name="add_product" value="add product">
-                <a href="dashboard.php" class="btn">go back!</a>
-            </form>
+            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
+                <h3>Add a New Product</h3>
+                <label for="product_name">Product Name:</label>
+                <input type="text" id="product_name" name="product_name" placeholder="Enter product name" class="box">
 
+                <label for="product_name">Product Description:</label>
+                <div style="position: relative;">
+                    <textarea id="product_description" name="product_description"
+                        placeholder="Enter product description" class="box" maxlength="250"
+                        oninput="updateCharacterCount()" style="resize: vertical;"></textarea>
+                    <div id="characterCount" style="position: absolute; bottom: 0; right: 0;">Characters left: 250</div>
+                </div>
+
+                <script>
+                function updateCharacterCount() {
+                    var textarea = document.getElementById("product_description");
+                    var remainingChars = 250 - textarea.value.length;
+
+                    var countDisplay = document.getElementById("characterCount");
+                    countDisplay.textContent = "Characters left: " + remainingChars;
+                }
+                </script>
+
+                <br>
+
+
+                <label for="product_price">Product Price:</label>
+                <input type="number" id="product_price" name="product_price" placeholder="Enter product price"
+                    class="box">
+
+                <label for="product_price">Available Amount(kg):</label>
+                <input type="number" id="product_amount" name="product_amount"
+                    placeholder="Enter Available Amount in Kilograms" class="box">
+
+                <label for="product_type">Product Type:</label>
+                <select id="product_type" name="product_type" class="box">
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="dried">Dried</option>
+                    <option value="materials">Materials</option>
+                </select>
+
+                <label for="product_image">Product Image:</label>
+                <input type="file" id="product_image" accept="image/png, image/jpeg, image/jpg" name="product_image"
+                    class="box">
+
+                <input type="submit" class="btn" name="add_product" value="Add Product">
+                <a href="dashboard.php" class="btn">Go Back</a>
+            </form>
         </div>
 
         <?php
@@ -281,6 +328,8 @@ if(isset($message)){
                         <th>product image</th>
                         <th>product name</th>
                         <th>product price</th>
+                        <th>product type</th>
+                        <th>Amount</th>
                         <th>action</th>
                     </tr>
                 </thead>
@@ -289,6 +338,8 @@ if(isset($message)){
                     <td><img src="img/<?php echo $row['image']; ?>" height="100" alt=""></td>
                     <td><?php echo $row['name']; ?></td>
                     <td>LKR <?php echo $row['price']; ?>/=</td>
+                    <td><?php echo $row['type']; ?></td>
+                    <td><?php echo $row['amount']; ?></td>
                     <td>
                         <a href="product_update.php?edit=<?php echo $row['id']; ?>" class="btn1"> <i
                                 class="fas fa-edit"></i> edit </a>
