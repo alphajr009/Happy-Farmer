@@ -54,19 +54,33 @@ if (isset($_GET['id'])) {
                         class="img-fluid" alt="Colorlib Template"></a>
             </div>
             <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+
+
                 <h3><?php echo $productName; ?></h3>
-                <p class="price"><span>Rs <?php echo $productPrice; ?></span></p>
+                <p class="price"><span id="displayedPrice">Rs <?php echo $productPrice; ?></span></p>
+
+                <script>
+                function updatePrice() {
+                    var sizeSelect = document.getElementById("size");
+                    var selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
+                    var multiplier = selectedOption.getAttribute("data-multiplier");
+                    var originalPrice = <?php echo $productPrice; ?>;
+                    var newPrice = originalPrice * multiplier;
+                    document.getElementById("displayedPrice").innerText = "Rs " + newPrice;
+                }
+                </script>
+
                 <p><?php echo $productDescription; ?></p>
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="form-group d-flex">
                             <div class="select-wrap">
                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                <select name="size" id="size" class="form-control">
-                                    <option value="0.5">Small-0.5kg</option>
-                                    <option value="1">Medium-1kg</option>
-                                    <option value="2">Large-2kg</option>
-                                    <option value="5">Extra Large -5kg</option>
+                                <select name="size" id="size" class="form-control" onchange="updatePrice()">
+                                    <option value="0.5" data-multiplier="1">Small-0.5kg</option>
+                                    <option value="1" data-multiplier="2">Medium-1kg</option>
+                                    <option value="2" data-multiplier="4">Large-2kg</option>
+                                    <option value="5" data-multiplier="10">Extra Large -5kg</option>
                                 </select>
                             </div>
                         </div>

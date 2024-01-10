@@ -5,11 +5,12 @@ include 'nav.php';
 if(isset($_SESSION['user_id'])) {
     $userid = $_SESSION['user_id'];
 
-    $cartQuery = "SELECT cart.*, products.name AS product_name, products.price, products.image
-                  FROM cart
-                  INNER JOIN products ON cart.itemid = products.id
-                  WHERE cart.userid = $userid";
-    $cartResult = mysqli_query($conn, $cartQuery);
+	$cartQuery = "SELECT cart.*, products.name AS product_name, products.image, cart.newprice
+	FROM cart
+	INNER JOIN products ON cart.itemid = products.id
+	WHERE cart.userid = $userid";
+$cartResult = mysqli_query($conn, $cartQuery);
+
 
     if ($cartResult) {
 ?>
@@ -60,7 +61,7 @@ if(isset($_SESSION['user_id'])) {
                                     <h3><?php echo $cartItem['product_name']; ?></h3>
                                 </td>
 
-                                <td class="price">Rs.<?php echo $cartItem['price']; ?></td>
+                                <td class="price">Rs.<?php echo $cartItem['newprice']; ?></td>
 
                                 <td class="price"><?php echo $cartItem['size']; ?>kg</td>
 
@@ -73,7 +74,7 @@ if(isset($_SESSION['user_id'])) {
                                 </td>
 
                                 <td class="total total-value">
-                                    Rs.<?php echo $cartItem['price'] * $cartItem['quantity']; ?></td>
+                                    Rs.<?php echo $cartItem['newprice'] * $cartItem['quantity']; ?></td>
 
                             </tr>
                             <?php
