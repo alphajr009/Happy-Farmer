@@ -5,6 +5,19 @@ include 'nav.php';
 if (isset($_GET['id'])) {
     $productId = $_GET['id'];
 
+
+    if (isset($_GET['success']) && $_GET['success'] == 1) {
+        echo '<div class="alert alert-success" style="position: fixed; top: 120px; left: 25px; z-index: 1000;">';
+        echo 'Item added to cart successfully!';
+        echo '</div>';
+  
+        echo '<script>';
+        echo 'setTimeout(function(){ $(".alert").fadeOut("slow"); }, 5000);';
+        echo '</script>';
+     }
+  
+
+
     $result = mysqli_query($conn, "SELECT * FROM products WHERE id = $productId");
 
     if ($result) {
@@ -49,7 +62,7 @@ if (isset($_GET['id'])) {
                         <div class="form-group d-flex">
                             <div class="select-wrap">
                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                <select name="" id="" class="form-control">
+                                <select name="size" id="size" class="form-control">
                                     <option value="0.5">Small-0.5kg</option>
                                     <option value="1">Medium-1kg</option>
                                     <option value="2">Large-2kg</option>
@@ -78,7 +91,17 @@ if (isset($_GET['id'])) {
                         <p style="color: #000;"><?php echo $productAmount; ?> kg available</p>
                     </div>
                 </div>
-                <p><a href="cart.html" class="btn btn-black py-3 px-5">Add to Cart</a></p>
+                <script>
+                function addToCart() {
+                    var quantity = document.getElementById("quantity").value;
+                    var size = document.getElementById("size").value;
+                    window.location.href = 'addtocart.php?id=<?php echo $productId; ?>&quantity=' + quantity +
+                        '&size=' + size;
+                }
+                </script>
+
+                <p><a href="#" class="btn btn-black py-3 px-5" onclick="addToCart()">Add to Cart</a></p>
+
             </div>
         </div>
     </div>

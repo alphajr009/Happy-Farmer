@@ -52,6 +52,8 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body class="goto-here">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <div class="py-1 bg-primary">
         <div class="container">
             <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
