@@ -3,9 +3,26 @@ session_start();
 
 $accountLink = '';
 $loginRegisterLinks = '';
+$cartItemCount = 0;
 
 if (isset($_SESSION['user_id'])) {
-    $user = $_SESSION['user_id'];
+    $userId = $_SESSION['user_id'];
+
+    // Fetch user details
+    $query = "SELECT * FROM users WHERE user_id = '$userId'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $userDetails = mysqli_fetch_assoc($result);
+    }
+
+    // Fetch count of items in the cart for the logged-in user
+    $cartQuery = "SELECT SUM(quantity) AS totalQuantity FROM cart WHERE userid = '$userId'";
+    $cartResult = mysqli_query($conn, $cartQuery);
+
+    if ($cartResult) {
+        $cartItemCount = (int) mysqli_fetch_assoc($cartResult)['totalQuantity'];
+    }
 
     $accountLink = '<li class="nav-item"><a href="account.php" class="nav-link">Account</a></li>';
     $loginRegisterLinks = '<li class="nav-item"><a href="logout.php" class="nav-link">Logout</a></li>';
@@ -102,7 +119,7 @@ if (isset($_SESSION['user_id'])) {
                     <?php echo $accountLink; ?>
                     <?php echo $loginRegisterLinks; ?>
                     <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span
-                                class="icon-shopping_cart"></span>[0]</a></li>
+                                class="icon-shopping_cart"></span>[<?php echo $cartItemCount; ?>]</a></li>
 
                 </ul>
             </div>

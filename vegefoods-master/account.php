@@ -5,6 +5,21 @@ require_once 'config.php';
 $accountLink = '';
 $loginRegisterLinks = '';
 
+
+$query = "SELECT * FROM users WHERE user_id = '$userId'";
+$result = mysqli_query($conn, $query);
+
+if ($result) {
+    $userDetails = mysqli_fetch_assoc($result);
+}
+
+$cartQuery = "SELECT SUM(quantity) AS totalQuantity FROM cart WHERE userid = '$userId'";
+$cartResult = mysqli_query($conn, $cartQuery);
+
+if ($cartResult) {
+    $cartItemCount = (int) mysqli_fetch_assoc($cartResult)['totalQuantity'];
+}
+
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
@@ -173,7 +188,8 @@ if (isset($_SESSION['user_id'])) {
                     <?php echo $accountLink; ?>
                     <?php echo $loginRegisterLinks; ?>
                     <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span
-                                class="icon-shopping_cart"></span>[0]</a></li>
+                                class="icon-shopping_cart"></span>[<?php echo $cartItemCount; ?>]</a></li>
+
 
                 </ul>
             </div>
