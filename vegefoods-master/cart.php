@@ -49,7 +49,12 @@ $cartResult = mysqli_query($conn, $cartQuery);
                                 while ($cartItem = mysqli_fetch_assoc($cartResult)) {
                             ?>
                             <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                                <td class="product-remove">
+                                    <a href="#" class="remove-item" data-itemid="<?php echo $cartItem['cart_id']; ?>">
+                                        <span class="ion-ios-close"></span>
+                                    </a>
+
+                                </td>
 
                                 <td class="image-prod">
                                     <div class="img"
@@ -126,6 +131,41 @@ $(document).ready(function() {
 
     updateSubtotal();
 
+    function removeCartItem(cart_id) {
+        $.ajax({
+            type: 'POST',
+            url: 'removecartitem.php',
+            data: {
+                cart_id: cart_id
+            },
+            success: function(response) {
+                try {
+                    var responseData = JSON.parse(response);
+
+                    if (responseData.success) {
+                        $('[data-itemid="' + cart_id + '"]').closest('tr').remove();
+                        updateSubtotal();
+                        console.log(responseData.message);
+                    } else {
+                        console.log(responseData.message);
+                        updateSubtotal();
+                    }
+                } catch (error) {
+                    console.log('Error parsing JSON response: ' + error);
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    $('.remove-item').on('click', function(e) {
+        e.preventDefault();
+        var cart_id = $(this).data('itemid');
+        removeCartItem(cart_id);
+    });
+
     $('.quantity').on('input', function() {
         var quantity = $(this).val();
         var itemid = $(this).data('itemid');
@@ -161,6 +201,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 
 <?php
     } else {
