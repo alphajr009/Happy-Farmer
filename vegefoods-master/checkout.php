@@ -129,20 +129,34 @@ if (isset($_SESSION['user_id'])) {
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Cash on
-                                            Delivery</label>
+                                        <label><input type="radio" name="optradio" id="cashOnDelivery" class="mr-2">
+                                            Cash on Delivery</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Card Payment</label>
+                                        <label><input type="radio" name="optradio" id="cardPayment" class="mr-2"
+                                                checked> Card Payment</label>
                                     </div>
                                 </div>
                             </div>
 
-                            <p><a href="#" class="btn btn-primary py-3 px-4">Place an order</a></p>
+                            <p><a href="#" class="btn btn-primary py-3 px-4" id="placeOrderBtn">Place an order</a></p>
+
+                            <script>
+                            document.getElementById('placeOrderBtn').addEventListener('click', function() {
+                                var cashOnDelivery = document.getElementById('cashOnDelivery');
+                                var cardPayment = document.getElementById('cardPayment');
+
+                                if (cashOnDelivery.checked) {
+                                    window.location.href = 'orderplace.php';
+                                } else if (cardPayment.checked) {
+                                    window.location.href = 'stripepayportal.php';
+                                }
+                            });
+                            </script>
                         </div>
                     </div>
                 </div>
