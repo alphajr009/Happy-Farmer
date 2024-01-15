@@ -1,22 +1,4 @@
-<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
-    <div class="container py-4">
-        <div class="row d-flex justify-content-center py-5">
-            <div class="col-md-6">
-                <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-                <span>Get e-mail updates about our latest shops and special offers</span>
-            </div>
-            <div class="col-md-6 d-flex align-items-center">
-                <form action="#" class="subscribe-form">
-                    <div class="form-group d-flex">
-                        <input type="text" class="form-control" placeholder="Enter email address">
-                        <input type="submit" value="Subscribe" class="submit px-3">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-<footer class="ftco-footer ftco-section">
+<footer class="ftco-footer ftco-section bg-light">
     <div class="container">
         <div class="row">
             <div class="mouse">
@@ -28,10 +10,8 @@
         <div class="row mb-5">
             <div class="col-md">
                 <div class="ftco-footer-widget mb-4">
-                    <h2 class="ftco-heading-2">HAPPY FARMER</h2>
-                    <p>The web application empowers agriculture, enabling direct sales, fair prices, and increased
-                        profits, eliminating middlemen and supporting local communities.Together, we can empower
-                        agriculture and foster a thriving, sustainable future.".</p>
+                    <h2 class="ftco-heading-2">Vegefoods</h2>
+                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
                     <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                         <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                         <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -72,12 +52,12 @@
                     <h2 class="ftco-heading-2">Have a Questions?</h2>
                     <div class="block-23 mb-3">
                         <ul>
-                            <li><span class="icon icon-map-marker"></span><span class="text">Maligathena Farming
-                                    Organization,<br>Udawela,<br>Mandaramnuwara,<br>NuwaraEliya.</span></li>
-                            <li><a href="#"><span class="icon icon-phone"></span><span
-                                        class="text">0523536868</span></a></li>
+                            <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain
+                                    View, San Francisco, California, USA</span></li>
+                            <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
+                                        210</span></a></li>
                             <li><a href="#"><span class="icon icon-envelope"></span><span
-                                        class="text">happyfarmer@.com</span></a></li>
+                                        class="text">info@yourdomain.com</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -95,22 +75,6 @@
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
             </div>
-            <!-- Translation Code here -->
-            <span>
-                <div class="translate" id="google_translate_element"></div>
-
-                <script type="text/javascript">
-                function googleTranslateElementInit() {
-                    new google.translate.TranslateElement({
-                        pageLanguage: 'en'
-                    }, 'google_translate_element');
-                }
-                </script>
-                <script type="text/javascript"
-                    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-                </script>
-            </span>
-            <!-- Translation Code End here -->
         </div>
     </div>
 </footer>

@@ -86,6 +86,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                         <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
                             <span class="text">happyfarmer@gmail.com</span>
+
                         </div>
                     </div>
                 </div>
