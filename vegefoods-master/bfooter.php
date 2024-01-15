@@ -75,6 +75,23 @@
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
             </div>
+            <!-- Translation Code here -->
+            <span>
+                <div class="translate" id="google_translate_element"></div>
+
+                <script type="text/javascript">
+                function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'en', // Set the default language to English
+                    }, 'google_translate_element');
+                }
+                </script>
+                <script type="text/javascript"
+                    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+                </script>
+            </span>
+            <!-- Translation Code End here -->
+
         </div>
     </div>
 </footer>
