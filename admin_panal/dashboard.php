@@ -1,5 +1,59 @@
 <?php include 'dashboard_top.php'; ?>
 
+<?php
+// Include the database connection
+include('config.php');
+
+// Fetch data based on the selected time period
+$timePeriod = isset($_GET['time_period']) ? $_GET['time_period'] : 'daily';
+
+if ($timePeriod == 'daily') {
+    $query = "SELECT DATE_FORMAT(order_date, '%Y-%m-%d') AS date, SUM(total_amount) AS total_amount 
+              FROM order_details 
+              GROUP BY DATE_FORMAT(order_date, '%Y-%m-%d')";
+}else {
+    $query = "SELECT DATE_FORMAT(order_date, '%Y-%m') AS date, SUM(total_amount) AS total_amount 
+              FROM order_details 
+              GROUP BY DATE_FORMAT(order_date, '%Y-%m')";
+}
+
+$result = mysqli_query($conn, $query);
+
+// Fetch data into an associative array
+$data = array();
+while ($row = mysqli_fetch_assoc($result)) {
+    $data[] = $row;
+}
+
+
+?>
+
+<?php
+$sql = "SELECT COUNT(*) AS customer_count FROM users WHERE isAdmin = 0";
+$result = $conn->query($sql);
+
+if ($result) {
+    $row = $result->fetch_assoc();
+    $customerCount = $row['customer_count'];
+} else {
+    echo "Error: " . $conn->error;
+}
+
+
+$sql2 = "SELECT COUNT(*) AS order_count FROM order_details" ;
+$result2 = $conn->query($sql2);
+
+if ($result2) {
+    $row1 = $result2->fetch_assoc();
+    $orderCount = $row1['order_count'];
+} else {
+    echo "Error: " . $conn->error;
+}
+
+
+$conn->close();
+?>
+
 <body>
     <!-- =============== Navigation ================ -->
     <div class="container">
@@ -99,18 +153,9 @@
             </div>
 
             <!-- ======================= Cards ================== -->
-            <?php
-$sql = "SELECT COUNT(*) AS customer_count FROM users WHERE isAdmin = 0";
-$result = $conn->query($sql);
 
-if ($result) {
-    $row = $result->fetch_assoc();
-    $customerCount = $row['customer_count'];
-} else {
-    echo "Error: " . $conn->error;
-}
-$conn->close();
-?>
+
+
             <div class="cardBox">
                 <div class="card">
                     <div>
@@ -125,7 +170,7 @@ $conn->close();
 
                 <div class="card">
                     <div>
-                        <div class="numbers">0</div>
+                        <div class="numbers"><?= $orderCount ?></div>
                         <div class="cardName">Sales</div>
                     </div>
 
@@ -156,6 +201,50 @@ $conn->close();
                     </div>
                 </div>
             </div>
+
+            <div class="chart">
+                <!-- Create buttons for time period selection -->
+                <button class="time-period-btn <?php echo ($timePeriod == 'daily') ? 'active' : ''; ?>"
+                    onclick="changeTimePeriod('daily')">Daily</button>
+
+                <button class="time-period-btn <?php echo ($timePeriod == 'monthly') ? 'active' : ''; ?>"
+                    onclick="changeTimePeriod('monthly')">Monthly</button>
+
+                <canvas id="orderChart" width="400" height="200"></canvas>
+
+                <script>
+                var orderDates = <?php echo json_encode(array_column($data, 'date')); ?>;
+                var totalAmounts = <?php echo json_encode(array_column($data, 'total_amount')); ?>;
+
+                var ctx = document.getElementById('orderChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: orderDates,
+                        datasets: [{
+                            label: 'Total Amount',
+                            data: totalAmounts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Function to change time period and reload the page
+                function changeTimePeriod(period) {
+                    window.location.href = 'dashboard.php?time_period=' + period;
+                }
+                </script>
+            </div>
+
 
 
 

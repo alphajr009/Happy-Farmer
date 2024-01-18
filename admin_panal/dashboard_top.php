@@ -12,6 +12,29 @@
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
+    .time-period-btn {
+
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #82ae46;
+        color: #82ae46;
+    }
+
+    .time-period-btn.active {
+        background-color: #82ae46;
+        color: #fff;
+    }
+
+    .chart {
+        padding: 20px;
+    }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
     /* =========== Google Fonts ============ */
     @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
 
