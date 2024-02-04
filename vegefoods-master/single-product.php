@@ -2,6 +2,8 @@
 @include 'config.php';
 include 'nav.php';
 
+
+
 if (isset($_GET['id'])) {
     $productId = $_GET['id'];
 
@@ -32,7 +34,41 @@ if (isset($_GET['id'])) {
         echo "Error retrieving product details: " . mysqli_error($conn);
     }
 }
+
+echo '<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var productId = ' . json_encode($productId) . ';
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var wishStatus = xhr.responseText;
+            console.log("Wish Status: " + wishStatus);
+            updateWishlistButton(wishStatus);
+        }
+    };
+    xhr.open("POST", "checkwishlist.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("id=" + productId);
+});
+</script>';
 ?>
+
+
+<script>
+function updateWishlistButton(wishStatus) {
+    var wishlistButton = document.getElementById("wishlistButton");
+
+    if (wishStatus === "1") {
+        wishlistButton.innerText = "Remove from Wishlist";
+        wishlistButton.onclick = removeFromWishlist;
+    } else {
+        wishlistButton.innerText = "Add to Wishlist";
+        wishlistButton.onclick = addToWishlist;
+    }
+}
+</script>
+
+
 
 <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
     <div class="container">
@@ -112,13 +148,59 @@ if (isset($_GET['id'])) {
                     window.location.href = 'addtocart.php?id=<?php echo $productId; ?>&quantity=' + quantity +
                         '&size=' + size;
                 }
+
+
+                function addToWishlist() {
+                    window.location.href = 'addtowishlist.php?id=<?php echo $productId; ?>';
+                }
                 </script>
 
-                <p><a href="#" class="btn btn-black py-3 px-5" onclick="addToCart()">Add to Cart</a></p>
+                <div class="col-md-12 d-flex">
+                    <div class="mr-2">
+                        <p><a href="#" class="btn btn-black py-3 px-5" onclick="addToCart()">Add to Cart</a></p>
+                    </div>
+                    <div>
+                        <p><a href="#" id="wishlistButton" class="btn btn-black py-3 px-5"
+                                onclick="updateWishlistButton()">Add to Wishlist</a></p>
+                    </div>
 
+                    <script>
+                    function removeFromWishlist() {
+                        var productId = <?php echo json_encode($productId); ?>;
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    var response = xhr.responseText;
+                                    if (response === 'removed_success') {
+                                        console.log('Successfully removed from Wishlist');
+                                        location.reload();
+                                    } else {
+                                        console.error('Error removing from Wishlist');
+                                        location.reload();
+
+                                    }
+                                } else {
+                                    console.error('Failed to send the request');
+                                    location.reload();
+
+                                }
+                            }
+                        };
+                        xhr.open('POST', 'removewishlist.php', true);
+                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xhr.send('id=' + productId);
+                    }
+                    </script>
+
+
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+
+
 
 <?php include 'single-footer.php'; ?>
