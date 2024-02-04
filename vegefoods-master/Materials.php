@@ -34,11 +34,36 @@ include 'nav.php';
             </div>
         </div>
 
+        <div class="search-bar-box" style="text-align: center; margin-bottom: 30px;">
+            <input type="text" id="searchInput" placeholder="Search materials..."
+                style="padding: 10px; border: 2px solid #82ae46; border-radius: 12px; width: 33%;">
+        </div>
+
+        <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            var searchTerm = this.value.trim().toLowerCase();
+            var products = document.getElementsByClassName('product');
+
+            for (var i = 0; i < products.length; i++) {
+                var productName = products[i].querySelector('h3 a').innerText.toLowerCase();
+
+                if (productName.includes(searchTerm)) {
+                    products[i].style.display = 'block';
+                } else {
+                    products[i].style.display = 'none';
+                }
+            }
+        });
+        </script>
+
         <div class="row">
             <?php
-    // Retrieve and display only vegetable products
-    $result = mysqli_query($conn, "SELECT * FROM products WHERE type = 'materials'");
-    while ($row = mysqli_fetch_assoc($result)) {
+     if (isset($_GET['search'])) {
+        $searchTerm = mysqli_real_escape_string($conn, $_GET['search']);
+        $result = mysqli_query($conn, "SELECT * FROM products WHERE type = 'materials' AND name LIKE '%$searchTerm%'");
+    } else {
+        $result = mysqli_query($conn, "SELECT * FROM products WHERE type = 'materials'");
+    } while ($row = mysqli_fetch_assoc($result)) {
         $productId = $row['id'];
         $productName = $row['name'];
         $productPrice = $row['price'];
